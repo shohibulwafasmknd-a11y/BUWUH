@@ -278,7 +278,15 @@
 
       <h2>📋 Data Buwuh</h2>
 
-      <div id="daftarData">
+<input
+  type="search"
+  id="pencarian"
+  placeholder="🔍 Cari nama atau barang..."
+  oninput="cariData()"
+  style="margin-bottom:15px;"
+>
+
+<div id="daftarData">
         <div class="kosong">
           Belum ada data.
         </div>
@@ -389,14 +397,16 @@
   }
 
 
-  function bukaData() {
+function bukaData() {
 
-    sembunyikanSemua();
+  sembunyikanSemua();
 
-    tampilkanData();
+  document.getElementById("pencarian").value = "";
 
-    document.getElementById("data")
-      .classList.remove("hidden");
+  tampilkanData();
+
+  document.getElementById("data")
+    .classList.remove("hidden");
 
   }
 
@@ -813,6 +823,123 @@
     });
 
   }
+  function cariData() {
+
+  const kata =
+    document
+      .getElementById("pencarian")
+      .value
+      .toLowerCase()
+      .trim();
+
+  if (!kata) {
+    tampilkanData();
+    return;
+  }
+
+  const hasil =
+    dataBuwuh.filter(item => {
+
+      // Cari berdasarkan nama pemberi
+      const nama =
+        item.nama
+          .toLowerCase()
+          .includes(kata);
+
+      // Cari berdasarkan keterangan
+      const keterangan =
+        (item.keterangan || "")
+          .toLowerCase()
+          .includes(kata);
+
+      // Cari berdasarkan nama barang
+      const barang =
+        item.items &&
+        item.items.some(itemBarang =>
+          itemBarang.nama
+            .toLowerCase()
+            .includes(kata)
+        );
+
+      return nama || keterangan || barang;
+
+    });
+
+
+  const tempat =
+    document.getElementById("daftarData");
+
+
+  if (hasil.length === 0) {
+
+    tempat.innerHTML = `
+      <div class="kosong">
+        Data tidak ditemukan.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  tempat.innerHTML = "";
+
+
+  hasil.forEach((item, index) => {
+
+    let daftarBarang = "";
+
+
+    if (item.items && item.items.length > 0) {
+
+      item.items.forEach(barang => {
+
+        daftarBarang += `
+          <p>
+            📦 ${barang.nama}
+            — ${barang.jumlah}
+            ${barang.satuan}
+          </p>
+        `;
+
+      });
+
+    }
+
+
+    tempat.innerHTML += `
+
+      <div class="item">
+
+        <strong>
+          ${item.nama}
+        </strong>
+
+        <p>
+          💵 Uang:
+          Rp${item.uang.toLocaleString("id-ID")}
+        </p>
+
+        ${daftarBarang}
+
+        ${
+          item.keterangan
+          ? `<p>📝 ${item.keterangan}</p>`
+          : ""
+        }
+
+        <small>
+          ${item.tanggal}
+        </small>
+
+      </div>
+
+    `;
+
+  });
+
+}
 
 </script>
 
