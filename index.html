@@ -14,12 +14,12 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f7f4;
+      background: #f2f8fc;
       color: #222;
     }
 
     header {
-      background: #2e7d32;
+      background: #087ea4;
       color: white;
       padding: 25px 20px;
       text-align: center;
@@ -51,7 +51,7 @@
 
     .card h2 {
       margin-top: 0;
-      color: #2e7d32;
+      color: #087ea4;
     }
 
     button {
@@ -60,40 +60,761 @@
       margin-top: 10px;
       border: 0;
       border-radius: 12px;
-      background: #2e7d32;
+      background: #087ea4;
       color: white;
       font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.97);
+      background: #066b8b;
+    }
+
+    .secondary {
+      background: #e7f3f8;
+      color: #087ea4;
+    }
+
+    .danger {
+      background: #e74c3c;
+      padding: 10px;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccdce3;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #087ea4;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .item-form {
+      background: #f2f8fc;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+    }
+
+    .item-row {
+      background: white;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 10px;
+      border: 1px solid #dceaf0;
+    }
+
+    .item-row strong {
+      color: #087ea4;
+    }
+
+    .item-row button {
+      margin-top: 8px;
+    }
+
+    .item {
+      border-bottom: 1px solid #e5e5e5;
+      padding: 14px 0;
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item strong {
+      color: #087ea4;
+      font-size: 17px;
+    }
+
+    .total {
+      font-size: 22px;
+      font-weight: bold;
+      color: #087ea4;
+      margin-top: 8px;
+    }
+
+    .kosong {
+      text-align: center;
+      color: #777;
+      padding: 20px 0;
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <h1>BUWUH</h1>
-    <p>Pencatatan Buwuhan</p>
-  </header>
+<header>
+  <h1>BUWUH</h1>
+  <p>Pencatatan Buwuhan</p>
+</header>
 
-  <main>
+<main>
+
+  <!-- BERANDA -->
+  <section id="beranda">
 
     <div class="card">
       <h2>Selamat Datang</h2>
       <p>
-        Catat buwuhan berupa uang, beras, gula,
-        rokok, dan barang lainnya.
+        Catat buwuhan berupa uang dan berbagai
+        macam barang sesuai pemberian.
       </p>
     </div>
 
     <div class="card">
       <h2>Menu</h2>
 
-      <button>➕ Tambah Buwuh</button>
-      <button>📋 Data Buwuh</button>
-      <button>📊 Laporan</button>
+      <button onclick="bukaTambah()">
+        ➕ Tambah Buwuh
+      </button>
+
+      <button onclick="bukaData()">
+        📋 Data Buwuh
+      </button>
+
+      <button onclick="bukaLaporan()">
+        📊 Laporan
+      </button>
+
     </div>
 
-  </main>
+  </section>
+
+
+  <!-- TAMBAH BUWUH -->
+  <section id="tambah" class="hidden">
+
+    <div class="card">
+
+      <h2>Tambah Buwuh</h2>
+
+      <label>Nama Pemberi</label>
+
+      <input
+        type="text"
+        id="nama"
+        placeholder="Contoh: Budi"
+      >
+
+
+      <label>Uang (Rp)</label>
+
+      <input
+        type="number"
+        id="uang"
+        placeholder="Kosongkan jika tidak ada"
+      >
+
+
+      <label>Barang / Item</label>
+
+      <div id="daftarItem"></div>
+
+      <button
+        class="secondary"
+        onclick="tambahItem()">
+
+        ＋ Tambah Item
+
+      </button>
+
+
+      <label>Keterangan</label>
+
+      <textarea
+        id="keterangan"
+        placeholder="Keterangan tambahan..."
+      ></textarea>
+
+
+      <button onclick="simpanBuwuh()">
+        💾 Simpan Buwuh
+      </button>
+
+
+      <button
+        class="secondary"
+        onclick="kembali()">
+
+        ← Kembali
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- DATA BUWUH -->
+  <section id="data" class="hidden">
+
+    <div class="card">
+
+      <h2>📋 Data Buwuh</h2>
+
+      <div id="daftarData">
+        <div class="kosong">
+          Belum ada data.
+        </div>
+      </div>
+
+      <button
+        class="secondary"
+        onclick="kembali()">
+
+        ← Kembali
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- LAPORAN -->
+  <section id="laporan" class="hidden">
+
+    <div class="card">
+
+      <h2>📊 Laporan</h2>
+
+      <p>Jumlah pemberi:</p>
+
+      <div
+        class="total"
+        id="jumlahPemberi">
+
+        0 orang
+
+      </div>
+
+
+      <p>Total uang:</p>
+
+      <div
+        class="total"
+        id="totalUang">
+
+        Rp0
+
+      </div>
+
+
+      <h3>Daftar Barang</h3>
+
+      <div id="laporanBarang">
+        Belum ada barang.
+      </div>
+
+
+      <button
+        class="secondary"
+        onclick="kembali()">
+
+        ← Kembali
+
+      </button>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<script>
+
+  let dataBuwuh =
+    JSON.parse(localStorage.getItem("dataBuwuh")) || [];
+
+
+  let nomorItem = 0;
+
+
+  function sembunyikanSemua() {
+
+    document.getElementById("beranda")
+      .classList.add("hidden");
+
+    document.getElementById("tambah")
+      .classList.add("hidden");
+
+    document.getElementById("data")
+      .classList.add("hidden");
+
+    document.getElementById("laporan")
+      .classList.add("hidden");
+
+  }
+
+
+  function bukaTambah() {
+
+    sembunyikanSemua();
+
+    document.getElementById("tambah")
+      .classList.remove("hidden");
+
+    document.getElementById("daftarItem")
+      .innerHTML = "";
+
+    nomorItem = 0;
+
+  }
+
+
+  function bukaData() {
+
+    sembunyikanSemua();
+
+    tampilkanData();
+
+    document.getElementById("data")
+      .classList.remove("hidden");
+
+  }
+
+
+  function bukaLaporan() {
+
+    sembunyikanSemua();
+
+    tampilkanLaporan();
+
+    document.getElementById("laporan")
+      .classList.remove("hidden");
+
+  }
+
+
+  function kembali() {
+
+    sembunyikanSemua();
+
+    document.getElementById("beranda")
+      .classList.remove("hidden");
+
+  }
+
+
+  // =========================
+  // TAMBAH ITEM
+  // =========================
+
+  function tambahItem() {
+
+    nomorItem++;
+
+    const div =
+      document.createElement("div");
+
+    div.className = "item-form";
+
+    div.id = "item-" + nomorItem;
+
+    div.innerHTML = `
+
+      <label>Nama Barang</label>
+
+      <input
+        type="text"
+        class="nama-item"
+        placeholder="Contoh: Rokok"
+      >
+
+
+      <label>Jumlah</label>
+
+      <input
+        type="number"
+        class="jumlah-item"
+        placeholder="Contoh: 2"
+        step="0.01"
+      >
+
+
+      <label>Satuan</label>
+
+      <input
+        type="text"
+        class="satuan-item"
+        placeholder="Contoh: bungkus, kg, liter"
+      >
+
+
+      <button
+        class="danger"
+        onclick="hapusItem(${nomorItem})">
+
+        🗑️ Hapus Item
+
+      </button>
+
+    `;
+
+    document
+      .getElementById("daftarItem")
+      .appendChild(div);
+
+  }
+
+
+  function hapusItem(id) {
+
+    const item =
+      document.getElementById("item-" + id);
+
+    if (item) {
+      item.remove();
+    }
+
+  }
+
+
+  // =========================
+  // SIMPAN
+  // =========================
+
+  function simpanBuwuh() {
+
+    const nama =
+      document
+        .getElementById("nama")
+        .value
+        .trim();
+
+
+    if (!nama) {
+
+      alert("Nama pemberi harus diisi.");
+
+      return;
+
+    }
+
+
+    const uang =
+      Number(
+        document.getElementById("uang").value
+      ) || 0;
+
+
+    const semuaItem =
+      document.querySelectorAll(".item-form");
+
+
+    const items = [];
+
+
+    semuaItem.forEach(form => {
+
+      const namaItem =
+        form
+          .querySelector(".nama-item")
+          .value
+          .trim();
+
+
+      const jumlah =
+        Number(
+          form
+            .querySelector(".jumlah-item")
+            .value
+        ) || 0;
+
+
+      const satuan =
+        form
+          .querySelector(".satuan-item")
+          .value
+          .trim();
+
+
+      if (namaItem) {
+
+        items.push({
+
+          nama: namaItem,
+
+          jumlah: jumlah,
+
+          satuan: satuan
+
+        });
+
+      }
+
+    });
+
+
+    const keterangan =
+      document
+        .getElementById("keterangan")
+        .value
+        .trim();
+
+
+    const data = {
+
+      nama: nama,
+
+      uang: uang,
+
+      items: items,
+
+      keterangan: keterangan,
+
+      tanggal:
+        new Date()
+          .toLocaleDateString("id-ID")
+
+    };
+
+
+    dataBuwuh.push(data);
+
+
+    localStorage.setItem(
+      "dataBuwuh",
+      JSON.stringify(dataBuwuh)
+    );
+
+
+    alert("Buwuh berhasil disimpan.");
+
+
+    document
+      .getElementById("nama")
+      .value = "";
+
+    document
+      .getElementById("uang")
+      .value = "";
+
+    document
+      .getElementById("keterangan")
+      .value = "";
+
+    document
+      .getElementById("daftarItem")
+      .innerHTML = "";
+
+
+    kembali();
+
+  }
+
+
+  // =========================
+  // DATA
+  // =========================
+
+  function tampilkanData() {
+
+    const tempat =
+      document.getElementById("daftarData");
+
+
+    if (dataBuwuh.length === 0) {
+
+      tempat.innerHTML =
+        `<div class="kosong">
+          Belum ada data.
+        </div>`;
+
+      return;
+
+    }
+
+
+    tempat.innerHTML = "";
+
+
+    dataBuwuh.forEach((item, index) => {
+
+      let daftarBarang = "";
+
+
+      if (item.items && item.items.length > 0) {
+
+        item.items.forEach(barang => {
+
+          daftarBarang += `
+            <p>
+              📦 ${barang.nama}
+              — ${barang.jumlah}
+              ${barang.satuan}
+            </p>
+          `;
+
+        });
+
+      }
+
+
+      tempat.innerHTML += `
+
+        <div class="item">
+
+          <strong>
+            ${index + 1}. ${item.nama}
+          </strong>
+
+          <p>
+            💵 Uang:
+            Rp${item.uang.toLocaleString("id-ID")}
+          </p>
+
+          ${daftarBarang}
+
+          ${
+            item.keterangan
+            ? `<p>📝 ${item.keterangan}</p>`
+            : ""
+          }
+
+          <small>
+            ${item.tanggal}
+          </small>
+
+        </div>
+
+      `;
+
+    });
+
+  }
+
+
+  // =========================
+  // LAPORAN
+  // =========================
+
+  function tampilkanLaporan() {
+
+    let uang = 0;
+
+
+    const barang = {};
+
+
+    dataBuwuh.forEach(item => {
+
+      uang += item.uang || 0;
+
+
+      if (item.items) {
+
+        item.items.forEach(data => {
+
+          const nama =
+            data.nama
+              .toLowerCase()
+              .trim();
+
+
+          if (!barang[nama]) {
+
+            barang[nama] = {
+
+              jumlah: 0,
+
+              satuan: data.satuan
+
+            };
+
+          }
+
+
+          barang[nama].jumlah +=
+            Number(data.jumlah) || 0;
+
+        });
+
+      }
+
+    });
+
+
+    document
+      .getElementById("jumlahPemberi")
+      .textContent =
+      dataBuwuh.length + " orang";
+
+
+    document
+      .getElementById("totalUang")
+      .textContent =
+      "Rp" + uang.toLocaleString("id-ID");
+
+
+    const tempat =
+      document.getElementById("laporanBarang");
+
+
+    const daftar =
+      Object.keys(barang);
+
+
+    if (daftar.length === 0) {
+
+      tempat.innerHTML =
+        "Belum ada barang.";
+
+      return;
+
+    }
+
+
+    tempat.innerHTML = "";
+
+
+    daftar.forEach(nama => {
+
+      tempat.innerHTML += `
+
+        <p>
+          📦 <strong>
+          ${nama}
+          </strong>
+          :
+          ${barang[nama].jumlah}
+          ${barang[nama].satuan}
+        </p>
+
+      `;
+
+    });
+
+  }
+
+</script>
 
 </body>
-</html>
+  </html>
