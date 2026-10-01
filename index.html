@@ -122,22 +122,6 @@
       margin-top: 15px;
     }
 
-    .item-row {
-      background: white;
-      padding: 12px;
-      border-radius: 10px;
-      margin-top: 10px;
-      border: 1px solid #dceaf0;
-    }
-
-    .item-row strong {
-      color: #087ea4;
-    }
-
-    .item-row button {
-      margin-top: 8px;
-    }
-
     .item {
       border-bottom: 1px solid #e5e5e5;
       padding: 14px 0;
@@ -181,6 +165,7 @@
 
     <div class="card">
       <h2>Selamat Datang</h2>
+
       <p>
         Catat buwuhan berupa uang dan berbagai
         macam barang sesuai pemberian.
@@ -188,6 +173,7 @@
     </div>
 
     <div class="card">
+
       <h2>Menu</h2>
 
       <button onclick="bukaTambah()">
@@ -212,7 +198,7 @@
 
     <div class="card">
 
-      <h2>Tambah Buwuh</h2>
+      <h2 id="judulTambah">Tambah Buwuh</h2>
 
       <label>Nama Pemberi</label>
 
@@ -222,7 +208,6 @@
         placeholder="Contoh: Budi"
       >
 
-
       <label>Uang (Rp)</label>
 
       <input
@@ -230,7 +215,6 @@
         id="uang"
         placeholder="Kosongkan jika tidak ada"
       >
-
 
       <label>Barang / Item</label>
 
@@ -244,7 +228,6 @@
 
       </button>
 
-
       <label>Keterangan</label>
 
       <textarea
@@ -252,11 +235,9 @@
         placeholder="Keterangan tambahan..."
       ></textarea>
 
-
       <button onclick="simpanBuwuh()">
         💾 Simpan Buwuh
       </button>
-
 
       <button
         class="secondary"
@@ -278,18 +259,20 @@
 
       <h2>📋 Data Buwuh</h2>
 
-<input
-  type="search"
-  id="pencarian"
-  placeholder="🔍 Cari nama atau barang..."
-  oninput="cariData()"
-  style="margin-bottom:15px;"
->
+      <input
+        type="search"
+        id="pencarian"
+        placeholder="🔍 Cari nama atau barang..."
+        oninput="cariData()"
+        style="margin-bottom:15px;"
+      >
 
-<div id="daftarData">
+      <div id="daftarData">
+
         <div class="kosong">
           Belum ada data.
         </div>
+
       </div>
 
       <button
@@ -322,7 +305,6 @@
 
       </div>
 
-
       <p>Total uang:</p>
 
       <div
@@ -333,13 +315,11 @@
 
       </div>
 
-
       <h3>Daftar Barang</h3>
 
       <div id="laporanBarang">
         Belum ada barang.
       </div>
-
 
       <button
         class="secondary"
@@ -361,22 +341,31 @@
   let dataBuwuh =
     JSON.parse(localStorage.getItem("dataBuwuh")) || [];
 
-
   let nomorItem = 0;
 
+  let editIndex = -1;
+
+
+  // =========================
+  // NAVIGASI
+  // =========================
 
   function sembunyikanSemua() {
 
-    document.getElementById("beranda")
+    document
+      .getElementById("beranda")
       .classList.add("hidden");
 
-    document.getElementById("tambah")
+    document
+      .getElementById("tambah")
       .classList.add("hidden");
 
-    document.getElementById("data")
+    document
+      .getElementById("data")
       .classList.add("hidden");
 
-    document.getElementById("laporan")
+    document
+      .getElementById("laporan")
       .classList.add("hidden");
 
   }
@@ -386,27 +375,50 @@
 
     sembunyikanSemua();
 
-    document.getElementById("tambah")
+    editIndex = -1;
+
+    document
+      .getElementById("judulTambah")
+      .textContent = "Tambah Buwuh";
+
+    document
+      .getElementById("tambah")
       .classList.remove("hidden");
 
-    document.getElementById("daftarItem")
+    document
+      .getElementById("daftarItem")
       .innerHTML = "";
 
     nomorItem = 0;
 
+    document
+      .getElementById("nama")
+      .value = "";
+
+    document
+      .getElementById("uang")
+      .value = "";
+
+    document
+      .getElementById("keterangan")
+      .value = "";
+
   }
 
 
-function bukaData() {
+  function bukaData() {
 
-  sembunyikanSemua();
+    sembunyikanSemua();
 
-  document.getElementById("pencarian").value = "";
+    document
+      .getElementById("pencarian")
+      .value = "";
 
-  tampilkanData();
+    tampilkanData();
 
-  document.getElementById("data")
-    .classList.remove("hidden");
+    document
+      .getElementById("data")
+      .classList.remove("hidden");
 
   }
 
@@ -417,7 +429,8 @@ function bukaData() {
 
     tampilkanLaporan();
 
-    document.getElementById("laporan")
+    document
+      .getElementById("laporan")
       .classList.remove("hidden");
 
   }
@@ -427,7 +440,8 @@ function bukaData() {
 
     sembunyikanSemua();
 
-    document.getElementById("beranda")
+    document
+      .getElementById("beranda")
       .classList.remove("hidden");
 
   }
@@ -458,7 +472,6 @@ function bukaData() {
         placeholder="Contoh: Rokok"
       >
 
-
       <label>Jumlah</label>
 
       <input
@@ -468,7 +481,6 @@ function bukaData() {
         step="0.01"
       >
 
-
       <label>Satuan</label>
 
       <input
@@ -476,7 +488,6 @@ function bukaData() {
         class="satuan-item"
         placeholder="Contoh: bungkus, kg, liter"
       >
-
 
       <button
         class="danger"
@@ -508,7 +519,7 @@ function bukaData() {
 
 
   // =========================
-  // SIMPAN
+  // SIMPAN / EDIT
   // =========================
 
   function simpanBuwuh() {
@@ -518,7 +529,6 @@ function bukaData() {
         .getElementById("nama")
         .value
         .trim();
-
 
     if (!nama) {
 
@@ -531,7 +541,9 @@ function bukaData() {
 
     const uang =
       Number(
-        document.getElementById("uang").value
+        document
+          .getElementById("uang")
+          .value
       ) || 0;
 
 
@@ -607,7 +619,19 @@ function bukaData() {
     };
 
 
-    dataBuwuh.push(data);
+    if (editIndex === -1) {
+
+      // DATA BARU
+      dataBuwuh.push(data);
+
+    } else {
+
+      // UPDATE DATA LAMA
+      dataBuwuh[editIndex] = data;
+
+      editIndex = -1;
+
+    }
 
 
     localStorage.setItem(
@@ -619,30 +643,13 @@ function bukaData() {
     alert("Buwuh berhasil disimpan.");
 
 
-    document
-      .getElementById("nama")
-      .value = "";
-
-    document
-      .getElementById("uang")
-      .value = "";
-
-    document
-      .getElementById("keterangan")
-      .value = "";
-
-    document
-      .getElementById("daftarItem")
-      .innerHTML = "";
-
-
     kembali();
 
   }
 
 
   // =========================
-  // DATA
+  // TAMPILKAN DATA
   // =========================
 
   function tampilkanData() {
@@ -653,10 +660,11 @@ function bukaData() {
 
     if (dataBuwuh.length === 0) {
 
-      tempat.innerHTML =
-        `<div class="kosong">
+      tempat.innerHTML = `
+        <div class="kosong">
           Belum ada data.
-        </div>`;
+        </div>
+      `;
 
       return;
 
@@ -668,56 +676,311 @@ function bukaData() {
 
     dataBuwuh.forEach((item, index) => {
 
-      let daftarBarang = "";
+      tempat.innerHTML +=
+        buatTampilanData(item, index);
+
+    });
+
+  }
 
 
-      if (item.items && item.items.length > 0) {
+  // =========================
+  // TEMPLATE DATA
+  // =========================
 
-        item.items.forEach(barang => {
+  function buatTampilanData(item, index) {
 
-          daftarBarang += `
-            <p>
-              📦 ${barang.nama}
-              — ${barang.jumlah}
-              ${barang.satuan}
-            </p>
-          `;
+    let daftarBarang = "";
 
+
+    if (
+      item.items &&
+      item.items.length > 0
+    ) {
+
+      item.items.forEach(barang => {
+
+        daftarBarang += `
+
+          <p>
+            📦 ${barang.nama}
+            — ${barang.jumlah}
+            ${barang.satuan}
+          </p>
+
+        `;
+
+      });
+
+    }
+
+
+    return `
+
+      <div class="item">
+
+        <strong>
+          ${index + 1}. ${item.nama}
+        </strong>
+
+        <p>
+          💵 Uang:
+          Rp${(item.uang || 0).toLocaleString("id-ID")}
+        </p>
+
+        ${daftarBarang}
+
+        ${
+          item.keterangan
+          ? `<p>📝 ${item.keterangan}</p>`
+          : ""
+        }
+
+        <small>
+          ${item.tanggal}
+        </small>
+
+        <button
+          onclick="editBuwuh(${index})">
+
+          ✏️ Edit
+
+        </button>
+
+        <button
+          class="danger"
+          onclick="hapusBuwuh(${index})">
+
+          🗑️ Hapus
+
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
+
+  // =========================
+  // PENCARIAN
+  // =========================
+
+  function cariData() {
+
+    const kata =
+      document
+        .getElementById("pencarian")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    if (!kata) {
+
+      tampilkanData();
+
+      return;
+
+    }
+
+
+    const hasil = [];
+
+
+    dataBuwuh.forEach((item, index) => {
+
+      const nama =
+        (item.nama || "")
+          .toLowerCase()
+          .includes(kata);
+
+
+      const keterangan =
+        (item.keterangan || "")
+          .toLowerCase()
+          .includes(kata);
+
+
+      const barang =
+        item.items &&
+        item.items.some(itemBarang =>
+          (itemBarang.nama || "")
+            .toLowerCase()
+            .includes(kata)
+        );
+
+
+      if (
+        nama ||
+        keterangan ||
+        barang
+      ) {
+
+        hasil.push({
+          item: item,
+          index: index
         });
 
       }
 
+    });
 
-      tempat.innerHTML += `
 
-        <div class="item">
+    const tempat =
+      document.getElementById("daftarData");
 
-          <strong>
-            ${index + 1}. ${item.nama}
-          </strong>
 
-          <p>
-            💵 Uang:
-            Rp${item.uang.toLocaleString("id-ID")}
-          </p>
+    if (hasil.length === 0) {
 
-          ${daftarBarang}
+      tempat.innerHTML = `
 
-          ${
-            item.keterangan
-            ? `<p>📝 ${item.keterangan}</p>`
-            : ""
-          }
-
-          <small>
-            ${item.tanggal}
-          </small>
-
+        <div class="kosong">
+          Data tidak ditemukan.
         </div>
 
       `;
 
+      return;
+
+    }
+
+
+    tempat.innerHTML = "";
+
+
+    hasil.forEach(data => {
+
+      tempat.innerHTML +=
+        buatTampilanData(
+          data.item,
+          data.index
+        );
+
     });
+
+  }
+
+
+  // =========================
+  // EDIT
+  // =========================
+
+  function editBuwuh(index) {
+
+    const item =
+      dataBuwuh[index];
+
+
+    if (!item) return;
+
+
+    editIndex = index;
+
+
+    sembunyikanSemua();
+
+
+    document
+      .getElementById("tambah")
+      .classList.remove("hidden");
+
+
+    document
+      .getElementById("judulTambah")
+      .textContent = "Edit Buwuh";
+
+
+    document
+      .getElementById("nama")
+      .value =
+      item.nama || "";
+
+
+    document
+      .getElementById("uang")
+      .value =
+      item.uang || "";
+
+
+    document
+      .getElementById("keterangan")
+      .value =
+      item.keterangan || "";
+
+
+    const daftar =
+      document.getElementById("daftarItem");
+
+
+    daftar.innerHTML = "";
+
+    nomorItem = 0;
+
+
+    if (
+      item.items &&
+      item.items.length > 0
+    ) {
+
+      item.items.forEach(barang => {
+
+        tambahItem();
+
+
+        const form =
+          daftar.lastElementChild;
+
+
+        form
+          .querySelector(".nama-item")
+          .value =
+          barang.nama || "";
+
+
+        form
+          .querySelector(".jumlah-item")
+          .value =
+          barang.jumlah || "";
+
+
+        form
+          .querySelector(".satuan-item")
+          .value =
+          barang.satuan || "";
+
+      });
+
+    }
+
+  }
+
+
+  // =========================
+  // HAPUS
+  // =========================
+
+  function hapusBuwuh(index) {
+
+    const yakin =
+      confirm(
+        "Yakin ingin menghapus data buwuh ini?"
+      );
+
+
+    if (!yakin) return;
+
+
+    dataBuwuh.splice(index, 1);
+
+
+    localStorage.setItem(
+      "dataBuwuh",
+      JSON.stringify(dataBuwuh)
+    );
+
+
+    cariData();
 
   }
 
@@ -730,13 +993,13 @@ function bukaData() {
 
     let uang = 0;
 
-
     const barang = {};
 
 
     dataBuwuh.forEach(item => {
 
-      uang += item.uang || 0;
+      uang +=
+        Number(item.uang) || 0;
 
 
       if (item.items) {
@@ -744,9 +1007,12 @@ function bukaData() {
         item.items.forEach(data => {
 
           const nama =
-            data.nama
+            (data.nama || "")
               .toLowerCase()
               .trim();
+
+
+          if (!nama) return;
 
 
           if (!barang[nama]) {
@@ -755,7 +1021,8 @@ function bukaData() {
 
               jumlah: 0,
 
-              satuan: data.satuan
+              satuan:
+                data.satuan || ""
 
             };
 
@@ -775,13 +1042,15 @@ function bukaData() {
     document
       .getElementById("jumlahPemberi")
       .textContent =
-      dataBuwuh.length + " orang";
+      dataBuwuh.length +
+      " orang";
 
 
     document
       .getElementById("totalUang")
       .textContent =
-      "Rp" + uang.toLocaleString("id-ID");
+      "Rp" +
+      uang.toLocaleString("id-ID");
 
 
     const tempat =
@@ -810,12 +1079,17 @@ function bukaData() {
       tempat.innerHTML += `
 
         <p>
+
           📦 <strong>
-          ${nama}
+            ${nama}
           </strong>
+
           :
+
           ${barang[nama].jumlah}
+
           ${barang[nama].satuan}
+
         </p>
 
       `;
@@ -823,125 +1097,8 @@ function bukaData() {
     });
 
   }
-  function cariData() {
-
-  const kata =
-    document
-      .getElementById("pencarian")
-      .value
-      .toLowerCase()
-      .trim();
-
-  if (!kata) {
-    tampilkanData();
-    return;
-  }
-
-  const hasil =
-    dataBuwuh.filter(item => {
-
-      // Cari berdasarkan nama pemberi
-      const nama =
-        item.nama
-          .toLowerCase()
-          .includes(kata);
-
-      // Cari berdasarkan keterangan
-      const keterangan =
-        (item.keterangan || "")
-          .toLowerCase()
-          .includes(kata);
-
-      // Cari berdasarkan nama barang
-      const barang =
-        item.items &&
-        item.items.some(itemBarang =>
-          itemBarang.nama
-            .toLowerCase()
-            .includes(kata)
-        );
-
-      return nama || keterangan || barang;
-
-    });
-
-
-  const tempat =
-    document.getElementById("daftarData");
-
-
-  if (hasil.length === 0) {
-
-    tempat.innerHTML = `
-      <div class="kosong">
-        Data tidak ditemukan.
-      </div>
-    `;
-
-    return;
-
-  }
-
-
-  tempat.innerHTML = "";
-
-
-  hasil.forEach((item, index) => {
-
-    let daftarBarang = "";
-
-
-    if (item.items && item.items.length > 0) {
-
-      item.items.forEach(barang => {
-
-        daftarBarang += `
-          <p>
-            📦 ${barang.nama}
-            — ${barang.jumlah}
-            ${barang.satuan}
-          </p>
-        `;
-
-      });
-
-    }
-
-
-    tempat.innerHTML += `
-
-      <div class="item">
-
-        <strong>
-          ${item.nama}
-        </strong>
-
-        <p>
-          💵 Uang:
-          Rp${item.uang.toLocaleString("id-ID")}
-        </p>
-
-        ${daftarBarang}
-
-        ${
-          item.keterangan
-          ? `<p>📝 ${item.keterangan}</p>`
-          : ""
-        }
-
-        <small>
-          ${item.tanggal}
-        </small>
-
-      </div>
-
-    `;
-
-  });
-
-}
 
 </script>
 
 </body>
-  </html>
+        </html>
